@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="pyminion",
-    version="0.2.0",
+    version="0.2.1",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/palnabarun/lambda-pool",
