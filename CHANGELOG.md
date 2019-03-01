@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.1
+
+- Minor changes to minion/__init__.py
+
 ## v0.2.0
 
 - Refactors the LambdaPool.apply API
