@@ -32,12 +32,12 @@ class LambdaPool:
         ]
         self.pool.map(f, payloads)
 
-    def apply(self, function: str, parameter: dict):
+    def apply(self, function: str, args: List = [], kwargs: dict = {}):
         f = functools.partial(self.invoke_function, self.lambda_function)
         payload = json.dumps({
             'function': function,
-            'args': parameter.get("args", []),
-            'kwargs': parameter.get("kwargs", {})
+            'args': args,
+            'kwargs': kwargs
         })
         return self.pool.apply(f, args=(payload,))
 
