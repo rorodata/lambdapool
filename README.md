@@ -1,1 +1,1 @@
-# minion
+# lambda-pool

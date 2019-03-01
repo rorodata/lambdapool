@@ -9,20 +9,14 @@ README = (HERE / "README.md").read_text()
 
 # This call to setup() does all the work
 setup(
-    name="pyminion",
+    name="lambda-pool",
     version="0.2.1",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/palnabarun/lambda-pool",
+    url="https://gitlab.com/rorodata/lambda-pool",
     author="Nabarun Pal",
     author_email="pal.nabarun95@gmail.com",
-    license="MIT",
-    classifiers=[
-        "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-    ],
-    packages=["minion"],
+    packages=["lambdapool"],
     include_package_data=True,
     install_requires=["boto3"],
 )
