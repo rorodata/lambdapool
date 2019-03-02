@@ -9,7 +9,7 @@ import boto3
 logger = logging.getLogger(__name__)
 
 class LambdaPool:
-    def __init__(self, workers: int, lambda_function: str, aws_access_key_id: str, aws_secret_access_key: str, region_name: str, endpoint_url: str):
+    def __init__(self, workers: int, lambda_function: str, aws_access_key_id: str=None, aws_secret_access_key: str=None, region_name: str=None, endpoint_url: str=None):
         self.workers = workers
         self.pool = ThreadPool(self.workers)
         self.lambda_function = lambda_function
