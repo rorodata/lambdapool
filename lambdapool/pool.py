@@ -69,10 +69,10 @@ class LambdaPool:
         ]
         self.pool.map(f, payloads)
 
-    def apply(self, function: str, args: List = [], kwargs: dict = {}):
+    def apply(self, function: str, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
-        return f(*args, **kwargs)
+        return f(*args, **kwds)
 
-    def apply_async(self, function: str, args: List = [], kwargs: dict = {}):
+    def apply_async(self, function: str, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
-        return self.pool.apply_async(f, args=args, kwds=kwargs)
+        return self.pool.apply_async(f, args=args, kwds=kwds)
