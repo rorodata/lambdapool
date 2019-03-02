@@ -41,7 +41,7 @@ class LambdaPool:
         })
         return self.pool.apply(f, args=(payload,))
 
-    def invoke_function(lambda_function: str, payload: dict):
+    def invoke_function(self, lambda_function: str, payload: dict):
         logger.info(f"=== Invoked {lambda_function} for {payload}")
 
         response = self.lambda_client.invoke(
@@ -50,9 +50,9 @@ class LambdaPool:
             Payload=payload.encode('ascii')
         )
 
-        result = json.loads(response['Payload'].read())["result"]
+        result = json.loads(response['Payload'].read())
 
-        logger.info(f"=== Result for invokation of {function} on {parameter}: {result}")
+        logger.info(f"=== Result for invokation of {lambda_function} on {payload}: {result}")
         print(result)
 
         return result
