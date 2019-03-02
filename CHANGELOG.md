@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.3
+
+- Finalizes LambdaPool API
+- Changes the behavior of AWS Lambda handler function. It returns the function result as it is now.
+
 ## v0.2.1
 
 - Minor changes to lambdapool/__init__.py
