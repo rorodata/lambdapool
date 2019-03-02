@@ -1,7 +1,7 @@
 import functools
 import json
 import logging
-from multiprocessing.pool import Pool
+from multiprocessing.pool import ThreadPool
 from typing import List
 
 import boto3
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class LambdaPool:
     def __init__(self, workers: int, lambda_function: str, aws_access_key_id: str, aws_secret_access_key: str, region_name: str, endpoint_url: str):
         self.workers = workers
-        self.pool = Pool(self.workers)
+        self.pool = ThreadPool(self.workers)
         self.lambda_function = lambda_function
         self.lambda_client = boto3.client(
             'lambda',
