@@ -72,3 +72,7 @@ class LambdaPool:
     def apply(self, function: str, args: List = [], kwargs: dict = {}):
         f = LambdaFunction(self.context, function)
         return f(*args, **kwargs)
+
+    def apply_async(self, function: str, args: List = [], kwargs: dict = {}):
+        f = LambdaFunction(self.context, function)
+        return self.pool.apply_async(f, args=args, kwds=kwargs)
