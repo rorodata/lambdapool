@@ -7,7 +7,7 @@
 
 ## v0.2.1
 
-- Minor changes to lambdapool/__init__.py
+- Minor changes to `lambdapool/__init__.py`
 
 ## v0.2.0
 

@@ -1,7 +1,9 @@
 # Lambda Pool
 
 > Author: Nabarun Pal <nabarun@rorodata.com>
+
 > Reviewer: Anand Chitipothu <anand@rorodata.com>
+
 > Created: 28 Feb 2019
 
 ## Overview
