@@ -58,16 +58,9 @@ class LambdaPool:
         self.pool = ThreadPool(self.workers)
         self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, region_name)
 
-    def map(self, function: str, parameters: List[dict]):
-        f = functools.partial(self.invoke_function, self.lambda_function)
-        payloads = [
-            json.dumps({
-                'function': function,
-                'args': parameter.get("args", []),
-                'kwargs': parameter.get("kwargs", {})
-            }) for parameter in parameters
-        ]
-        self.pool.map(f, payloads)
+    def map(self, function: str, iterable: List):
+        f = LambdaFunction(self.context, function)
+        return self.pool.map(f, iterable)
 
     def apply(self, function: str, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
