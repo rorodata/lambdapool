@@ -70,26 +70,5 @@ class LambdaPool:
         self.pool.map(f, payloads)
 
     def apply(self, function: str, args: List = [], kwargs: dict = {}):
-        f = functools.partial(self.invoke_function, self.lambda_function)
-        payload = json.dumps({
-            'function': function,
-            'args': args,
-            'kwargs': kwargs
-        })
-        return self.pool.apply(f, args=(payload,))
-
-    def invoke_function(self, lambda_function: str, payload: dict):
-        logger.info(f"=== Invoked {lambda_function} for {payload}")
-
-        response = self.lambda_client.invoke(
-            FunctionName=self.lambda_function,
-            LogType='Tail',
-            Payload=payload.encode('ascii')
-        )
-
-        result = json.loads(response['Payload'].read())
-
-        logger.info(f"=== Result for invokation of {lambda_function} on {payload}: {result}")
-        print(result)
-
-        return result
+        f = LambdaFunction(self.context, function)
+        return f(*args, **kwargs)
