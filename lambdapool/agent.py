@@ -11,9 +11,7 @@ def lambda_handler(event, context):
 
     func = load_function(module_name, function_name)
 
-    return {
-        'result': func(*args, **kwargs)
-    }
+    return func(*args, **kwargs)
 
 def get_lambda_handler():
     return lambda_handler
