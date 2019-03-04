@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4.1
+
+- Fixes typo in LambdaHandler
+
 ## v0.4
 
 - Finalizes LambdaHandler API

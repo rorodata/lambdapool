@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="lambda-pool",
-    version="0.4",
+    version="0.4.1",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/rorodata/lambda-pool",
