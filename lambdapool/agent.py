@@ -1,6 +1,6 @@
 import importlib
 
-def load_function(module_name):
+def load_function(module_name, function_name):
     module = importlib.import_module(module_name)
     return getattr(module, function_name)
 
