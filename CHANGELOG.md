@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.4
+
+- Finalizes LambdaHandler API
+
 ## v0.3
 
 - Finalizes LambdaPool API
