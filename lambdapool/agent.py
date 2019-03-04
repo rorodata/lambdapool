@@ -1,17 +1,17 @@
 import importlib
 
-def load_function(module_name, function_name):
-    module = importlib.import_module('.'+module_name, 'functions')
-    return getattr(module, function_name)
+class LambdaHandler:
+    def __init__(self, package):
+        self.package = package
 
-def lambda_handler(event, context):
-    module_name, _, function_name = event['function'].rpartition('.')
-    args = event['args']
-    kwargs = event['kwargs']
+    def __call__(self, event, context):
+        module_name, _, function_name = event['function'].rpartition('.')
+        args = event['args']
+        kwargs = event['kwargs']
 
-    func = load_function(module_name, function_name)
+        func = load_function(module_name, function_name)
+        return func(*args, **kwargs)
 
-    return func(*args, **kwargs)
-
-def get_lambda_handler():
-    return lambda_handler
+    def load_function(self, module_name, function_name):
+        module = importlib.import_module('.' + module_name, self.package)
+        return getattr(module, function_name)
