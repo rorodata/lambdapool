@@ -16,9 +16,9 @@ The `algoshelf` stack of software needs a Task Queue to run tasks like `compute_
 
 ## Goals
 
-- [ ] Implement LambdaPool interface
-- [ ] Implement the agent which sits inside a lambda function
-- [ ] ...
+- [x] Implement LambdaPool interface
+- [x] Implement the agent which sits inside a lambda function
+- [ ] Design the structure which will be used to specify our functions
 
 ## LambdaPool - API
 
@@ -90,16 +90,35 @@ $ pip install --user git+https://gitlab.com/rorodata/lambda-pool
 
 ## Structure of the AWS Lambda artefacts
 
-> Work In Progress
+We deploy the functions that are required as AWS Lambda functions. Lambda has a concept of handler which serves as the entrypoint for passing on request to the functions by Lambda. Since, we want to make the interface clean so that application developers need not learn the nitty gritty's lambda, there needs to be common entrypoint for functions to be called by `Lambda Pool`. So, I propose the following structure:
 
+```bash
+$ ls
+functions/
+handler.py
+
+$ ls functions/
+__init__.py
+math.py
+
+$ cat handler.py
+import lambdapool
+
+lambda_handler = lambdapool.LambdaHandler(package='functions')
+```
+
+Now, the above assumes that `lambdapool` package is available is path. We can make this possible by using AWS Lambda Layers or naively installing the packages at the root of the lambda function directory by using `pip install <package_name> --target .` and then archiving the complete folder.
+
+The latter approach does not seem to be a clean and scalable approach. We will be proceeding with AWS Lambda Layers for further discussions.
 
 ## TODO
 
-- [ ] Research and formalizing the usage of AWS SAM (Serverless Application Model) templates
-- [ ] Processing the return result from the function
+- [x] Research and formalizing the usage of AWS SAM (Serverless Application Model) templates
+- [x] Processing the return result from the function
 - [ ] Logging inside the function
 - [ ] Proper error handling
 - [ ] Local development of the application
+- [ ] Document AWS Lambda Layer generation and registration
 
 ## References
 
@@ -108,6 +127,10 @@ $ pip install --user git+https://gitlab.com/rorodata/lambda-pool
 3. [AWS SAM](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 ## Changelog
+
+### v0.3 - 3 March 2019
+
+- Adds documentation about the handler
 
 ### v0.2 - 1 March 2019
 
