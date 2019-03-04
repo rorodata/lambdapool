@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.5
+
+- Reverts back to the old style of lambda_handler
+
 ## v0.4.1
 
 - Fixes typo in LambdaHandler
