@@ -1,2 +1,2 @@
 from .pool import LambdaPool
-from .agent import LambdaHandler
+from .agent import lambda_handler
