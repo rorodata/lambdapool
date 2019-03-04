@@ -9,7 +9,7 @@ class LambdaHandler:
         args = event['args']
         kwargs = event['kwargs']
 
-        func = load_function(module_name, function_name)
+        func = self.load_function(module_name, function_name)
         return func(*args, **kwargs)
 
     def load_function(self, module_name, function_name):
