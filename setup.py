@@ -18,5 +18,9 @@ setup(
     author_email="pal.nabarun95@gmail.com",
     packages=["lambdapool"],
     include_package_data=True,
-    install_requires=["boto3"],
+    install_requires=["boto3", "click"],
+    entry_points='''
+        [console_scripts]
+        lambdapool=lambdapool:cli
+    '''
 )
