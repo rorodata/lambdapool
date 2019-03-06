@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.6
+
+- Implements lambdapool cli
+- Adds `create`, `update`, `list`, `delete` cli command functionalities
+
+
 ## v0.5.1
 
 - Fixes typo in lambdapool.agent.load_function
