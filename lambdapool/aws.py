@@ -98,8 +98,14 @@ class LambdaFunction:
             }
         )
 
-    def update(self):
-        pass
+    def update(self, archive):
+        if not self.exists():
+            raise ValueError(f'Function {self.function_name} does not exist')
+
+        lambda_client.update_function_code(
+            FunctionName=self.function_name,
+            ZipFile=archive
+            )
 
     def delete(self):
         pass
