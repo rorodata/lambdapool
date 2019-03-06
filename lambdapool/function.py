@@ -1,4 +1,5 @@
 import os
+import sys
 import pathlib
 import tempfile
 import shutil
@@ -29,6 +30,23 @@ class LambdaPoolFunction:
             with tempfile.NamedTemporaryFile() as self.temparchive:
                 self.archive_function()
                 self.create_function()
+
+    def update(self):
+        if not self.exists():
+            print(f'=== LambdaPool function {self.function_name} does not exist ===')
+            sys.exit(1)
+
+        with tempfile.TemporaryDirectory() as self.tempdir:
+            self.copy_paths()
+            self.install_requirements()
+
+            with tempfile.NamedTemporaryFile() as self.temparchive:
+                self.archive_function()
+                self.update_function()
+
+    def exists(self):
+        aws_lambda_function = aws.LambdaFunction(self.function_name)
+        return aws_lambda_function.exists()
 
     def copy_paths(self):
         print('=== Copying all specified files and directories ===')
@@ -73,5 +91,16 @@ class LambdaPoolFunction:
 
         aws_lambda_function = aws.LambdaFunction(self.function_name)
         aws_lambda_function.create(archive_data)
+
+        print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
+
+    def update_function(self):
+        print(f'=== Uploading function and dependencies ===')
+
+        with open(self.archive, 'rb') as f:
+            archive_data = f.read()
+
+        aws_lambda_function = aws.LambdaFunction(self.function_name)
+        aws_lambda_function.update(archive_data)
 
         print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
