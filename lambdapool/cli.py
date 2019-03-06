@@ -2,6 +2,8 @@ import click
 import os
 
 from .function import LambdaPoolFunction
+from . import utils
+from tabulate import tabulate
 
 @click.group()
 def cli():
@@ -19,7 +21,12 @@ def create(function_name, paths, requirements):
 
 @cli.command()
 def list():
-    click.echo('Listing all lambdapool functions...')
+    funcs = LambdaPoolFunction.list()
+    funcs = sorted(funcs, key=lambda x: x['last_updated'], reverse=True)
+    rows = []
+    for func in funcs:
+        rows.append([func['function_name'], utils.convert_size(func['size']), utils.datestr_str(func['last_updated'])])
+    click.echo(tabulate(rows, headers=['FUNCTION NAME', 'SIZE', 'WHEN']))
 
 @cli.command()
 @click.option('--requirements', '-r', type=click.Path(exists=True))
