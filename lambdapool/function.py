@@ -116,3 +116,7 @@ class LambdaPoolFunction:
         aws_lambda_function.update(archive_data)
 
         print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
+
+    @staticmethod
+    def list():
+        return aws.list_functions()

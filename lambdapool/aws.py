@@ -116,3 +116,30 @@ class LambdaFunction:
         role_name = f'lambdapool-role-{self.function_name}'
         role = Role(role_name)
         role.delete()
+
+def list_functions():
+    return [function for function in _list_functions() if is_lambdapool_function(function['function_arn'])]
+
+def _list_functions():
+    kwargs = {}
+    while True:
+        response = lambda_client.list_functions(**kwargs)
+        yield from [
+            {
+                'function_arn': function['FunctionArn'],
+                'function_name': function['FunctionName'],
+                'size': function['CodeSize'],
+                'last_updated': function['LastModified']
+            }
+            for function in response.get('Functions', [])
+        ]
+
+        next_marker = response.get('NextMarker')
+        if next_marker:
+            kwargs['Marker'] = next_marker
+        else:
+            break
+
+def is_lambdapool_function(function_arn):
+    tags = lambda_client.list_tags(Resource=function_arn)['Tags']
+    return tags.get('creator') == 'lambdapool'
