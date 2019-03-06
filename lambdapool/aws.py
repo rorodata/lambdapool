@@ -108,4 +108,11 @@ class LambdaFunction:
             )
 
     def delete(self):
-        pass
+        if not self.exists():
+            raise ValueError(f'Function {self.function_name} does not exist')
+
+        lambda_client.delete_function(FunctionName=self.function_name)
+
+        role_name = f'lambdapool-role-{self.function_name}'
+        role = Role(role_name)
+        role.delete()
