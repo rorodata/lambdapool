@@ -44,6 +44,14 @@ class LambdaPoolFunction:
                 self.archive_function()
                 self.update_function()
 
+    def delete(self):
+        if not self.exists():
+            print(f'=== LambdaPool function {self.function_name} does not exist ===')
+            sys.exit(1)
+
+        aws_lambda_function = aws.LambdaFunction(self.function_name)
+        aws_lambda_function.delete()
+
     def exists(self):
         aws_lambda_function = aws.LambdaFunction(self.function_name)
         return aws_lambda_function.exists()
