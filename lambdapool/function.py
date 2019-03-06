@@ -23,6 +23,10 @@ class LambdaPoolFunction:
         self.requirements = pathlib.Path(root+'/'+self.requirements).resolve() if self.requirements else None
 
     def create(self):
+        if self.exists():
+            print(f'=== LambdaPool function {self.function_name} already exists ===')
+            sys.exit(1)
+
         with tempfile.TemporaryDirectory() as self.tempdir:
             self.copy_paths()
             self.install_requirements()
