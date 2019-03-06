@@ -22,14 +22,17 @@ def list():
     click.echo('Listing all lambdapool functions...')
 
 @cli.command()
-@click.option('--requirements', '-r', required=True)
+@click.option('--requirements', '-r', type=click.Path(exists=True))
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1)
 def update(function_name, paths, requirements):
-    click.echo('Updating lambdapool function...')
-    click.echo(f'Function: {function_name}')
-    click.echo(f'Paths: {paths}')
-    click.echo(f'Requirements: {requirements}')
+    click.echo('=== Updating lambdapool function ===')
+
+    func = LambdaPoolFunction(function_name, paths, requirements)
+    func.update()
+
+    click.echo('=== Updated lambdapool function ===')
+
 
 @cli.command()
 @click.argument('function_name', nargs=1)
