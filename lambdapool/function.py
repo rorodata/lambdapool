@@ -28,7 +28,6 @@ class LambdaPoolFunction:
 
             with tempfile.NamedTemporaryFile() as self.temparchive:
                 self.archive_function()
-                self.ensure_function_role()
                 self.create_function()
 
     def copy_paths(self):
@@ -66,19 +65,13 @@ class LambdaPoolFunction:
         print(f'=== Archiving selected files and directories ===')
         self.archive = shutil.make_archive(self.temparchive.name, 'zip', self.tempdir)
 
-    def ensure_function_role(self):
-        role_name = f'lambdapool-role-{self.function_name}'
-        role = aws.Role(role_name)
-        if not role.exists():
-            role.create()
-        self.role = role
-
     def create_function(self):
         print(f'=== Uploading function and dependencies ===')
 
         with open(self.archive, 'rb') as f:
             archive_data = f.read()
 
-        aws.create_function(self.function_name, archive_data, self.role.get_arn())
+        aws_lambda_function = aws.LambdaFunction(self.function_name)
+        aws_lambda_function.create(archive_data)
 
         print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
