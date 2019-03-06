@@ -37,5 +37,9 @@ def update(function_name, paths, requirements):
 @cli.command()
 @click.argument('function_name', nargs=1)
 def delete(function_name):
-    click.echo('Deleting lambdapool function...')
-    click.echo(f'Function: {function_name}')
+    click.echo('=== Deleting lambdapool function ===')
+
+    func = LambdaPoolFunction(function_name)
+    func.delete()
+
+    click.echo('=== Deleted lambdapool function ===')
