@@ -1,7 +1,7 @@
 import click
 import os
 
-from .function import LambdaFunction
+from .function import LambdaPoolFunction
 
 @click.group()
 def cli():
@@ -13,7 +13,7 @@ def cli():
 @click.argument('paths', nargs=-1, type=click.Path(exists=True))
 def create(function_name, paths, requirements):
     click.echo('=== Creating lambdapool function ===')
-    func = LambdaFunction(function_name, paths, requirements)
+    func = LambdaPoolFunction(function_name, paths, requirements)
     func.create()
     click.echo(f'=== Succesfully created lambdapool function {function_name} ===')
 

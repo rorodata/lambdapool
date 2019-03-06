@@ -6,7 +6,7 @@ import base64
 
 from lambdapool import utils, aws
 
-class LambdaFunction:
+class LambdaPoolFunction:
     def __init__(self, function_name, paths, requirements=None):
         self.function_name = function_name
         self.paths = paths
