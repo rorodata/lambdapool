@@ -8,7 +8,7 @@ import base64
 from lambdapool import utils, aws
 
 class LambdaPoolFunction:
-    def __init__(self, function_name, paths, requirements=None):
+    def __init__(self, function_name, paths=None, requirements=None):
         self.function_name = function_name
         self.paths = paths
         self.requirements = requirements
@@ -19,7 +19,7 @@ class LambdaPoolFunction:
         self.paths = [
             pathlib.Path(root+'/'+path).resolve()
             for path in self.paths
-        ]
+        ] if self.paths else None
         self.requirements = pathlib.Path(root+'/'+self.requirements).resolve() if self.requirements else None
 
     def create(self):
