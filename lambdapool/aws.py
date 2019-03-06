@@ -64,17 +64,42 @@ class Role:
     def __repr__(self):
         return f'Role {self.role_name}'
 
-def create_function(function_name, encoded_archive, role_arn):
-    lambda_client.create_function(
-        FunctionName=function_name,
-        Runtime='python3.6',
-        Role=role_arn,
-        Handler='lambdapool.lambda_handler',
-        Code={
-            'ZipFile': encoded_archive,
-        },
-        Tags={
-            'creator': 'lambdapool',
-            'function_name': function_name
-        }
-    )
+class LambdaFunction:
+    def __init__(self, function_name):
+        self.function_name = function_name
+
+    def exists(self):
+        try:
+            lambda_client.get_function(FunctionName=self.function_name)
+        except lambda_client.exceptions.ResourceNotFoundException:
+            return False
+
+        return True
+
+    def create(self, archive):
+        if self.exists():
+            raise ValueError(f'Function {self.function_name} already exists')
+
+        role_name = f'lambdapool-role-{self.function_name}'
+        role = Role(role_name)
+        role.create()
+
+        lambda_client.create_function(
+            FunctionName=self.function_name,
+            Runtime='python3.6',
+            Role=role.get_arn(),
+            Handler='lambdapool.lambda_handler',
+            Code={
+                'ZipFile': archive,
+            },
+            Tags={
+                'creator': 'lambdapool',
+                'function_name': self.function_name
+            }
+        )
+
+    def update(self):
+        pass
+
+    def delete(self):
+        pass
