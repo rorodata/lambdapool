@@ -110,6 +110,13 @@ class LambdaFunction:
             Tags={
                 'creator': 'lambdapool',
                 'function_name': self.function_name
+            },
+            Environment={
+                'Variables': {
+                    'CREATOR': 'lambdapool',
+                    'FUNCTION_NAME': self.function_name,
+                    'LAMBDAPOOL_VERSION': __version__
+                }
             }
         )
 
