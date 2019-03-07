@@ -84,6 +84,19 @@ class LambdaFunction:
         role = Role(role_name)
         role.create()
 
+        # XXX-Nabarun: Hack to solve the issue of propagation of roles
+        # AWS IAM Roles do not instantly propagate through the AWS infrastructure
+        # Also, there is no defined way to know if the propagation is complete
+        # https://stackoverflow.com/questions/37503075/invalidparametervalueexception-the-role-defined-for-the-function-cannot-be-assu
+        created = False
+        while not created:
+            try:
+                self._create_function(role, archive)
+                created = True
+            except lambda_client.exceptions.InvalidParameterValueException:
+                created = False
+
+    def _create_function(self, role, archive):
         lambda_client.create_function(
             FunctionName=self.function_name,
             Runtime='python3.6',
