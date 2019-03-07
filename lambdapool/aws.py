@@ -1,6 +1,8 @@
 import json
 import boto3
 
+from lambdapool.version import __version__
+
 iam_client = boto3.client('iam')
 lambda_client = boto3.client('lambda')
 iam_resource = boto3.resource('iam')
