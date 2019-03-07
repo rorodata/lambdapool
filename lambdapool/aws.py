@@ -140,7 +140,7 @@ class LambdaFunction:
         role.delete()
 
 def list_functions():
-    return [function for function in _list_functions() if is_lambdapool_function(function['function_arn'])]
+    return [function for function in _list_functions() if is_lambdapool_function(function['environment'])]
 
 def _list_functions():
     kwargs = {}
@@ -151,7 +151,8 @@ def _list_functions():
                 'function_arn': function['FunctionArn'],
                 'function_name': function['FunctionName'],
                 'size': function['CodeSize'],
-                'last_updated': function['LastModified']
+                'last_updated': function['LastModified'],
+                'environment': function.get('Environment', {}).get('Variables', {})
             }
             for function in response.get('Functions', [])
         ]
@@ -162,6 +163,5 @@ def _list_functions():
         else:
             break
 
-def is_lambdapool_function(function_arn):
-    tags = lambda_client.list_tags(Resource=function_arn)['Tags']
-    return tags.get('creator') == 'lambdapool'
+def is_lambdapool_function(environment):
+    return environment.get('CREATOR') == 'lambdapool'
