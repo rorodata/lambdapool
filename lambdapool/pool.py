@@ -46,7 +46,7 @@ class LambdaFunction:
             Payload=json.dumps(payload).encode('ascii')
         )
 
-        result = response['Payload'].read().decode('ascii')
+        result = json.loads(response['Payload'].read().decode('ascii'))
 
         logger.info(f"=== Result for invokation of {self.function_name} on {payload}: {result}")
 
