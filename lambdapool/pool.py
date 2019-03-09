@@ -6,6 +6,8 @@ from typing import List
 
 import boto3
 
+from lambdapool.exceptions import LambdaPoolError
+
 logger = logging.getLogger(__name__)
 
 class Context:
