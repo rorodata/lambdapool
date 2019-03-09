@@ -52,6 +52,9 @@ class LambdaFunction:
 
         if response_payload.get('error'):
             raise LambdaPoolError(response_payload['error'])
+        # AWS errors like timeout errors are passed like this
+        elif response_payload.get('errorMessage'):
+            raise LambdaPoolError(response_payload['errorMessage'])
 
         result = response_payload['result']
 
