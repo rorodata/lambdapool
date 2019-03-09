@@ -9,6 +9,13 @@ def lambda_handler(event, context):
     args = event['args']
     kwargs = event['kwargs']
 
-    func = load_function(module_name, function_name)
+    try:
+        func = load_function(module_name, function_name)
+    except (ModuleNotFoundError, AttributeError) as e:
+        return {'error': str(e)}
 
-    return func(*args, **kwargs)
+    try:
+        result = func(*args, **kwargs)
+        return {'result': result}
+    except Exception as e:
+        return {'error': str(e)}
