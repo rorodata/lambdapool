@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.7.0
+
+- Implements functionality to propagate and raise appropriate errors
+- Changes the lambdapool function identification protocol to environment variables from tags
+- Makes lambdapool list an O(1) operation from the existing O(n)
+- Fixes an issue with AWS IAM role
+- Fixes bugs with return result not being json decoded
+
 ## v0.6
 
 - Implements lambdapool cli
