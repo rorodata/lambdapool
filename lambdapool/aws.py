@@ -1,4 +1,5 @@
 import json
+import datetime
 import boto3
 
 from lambdapool.version import __version__
@@ -151,7 +152,7 @@ def _list_functions():
                 'function_arn': function['FunctionArn'],
                 'function_name': function['FunctionName'],
                 'size': function['CodeSize'],
-                'last_updated': function['LastModified'],
+                'last_updated': datetime.datetime.strptime(function['LastModified'], '%Y-%m-%dT%H:%M:%S.%f%z'),
                 'environment': function.get('Environment', {}).get('Variables', {})
             }
             for function in response.get('Functions', [])

@@ -25,7 +25,7 @@ def list():
     funcs = sorted(funcs, key=lambda x: x['last_updated'], reverse=True)
     rows = []
     for func in funcs:
-        rows.append([func['function_name'], utils.convert_size(func['size']), utils.datestr_str(func['last_updated'])])
+        rows.append([func['function_name'], utils.convert_size(func['size']), utils.datestr(func['last_updated'])])
     click.echo(tabulate(rows, headers=['FUNCTION NAME', 'SIZE', 'WHEN']))
 
 @cli.command()

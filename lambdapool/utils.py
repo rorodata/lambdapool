@@ -22,10 +22,6 @@ def convert_size(size_bytes):
    return "{} {}".format(s, size_name[i])
 
 def datestr(then, now=None):
-    then = datetime.datetime.strptime(then, '%Y-%m-%dT%H:%M:%S.%f%z')
-    return _datestr(then, now)
-
-def _datestr(then, now=None):
     """Converts time to a human readable string.
 
     Wrapper over web.datestr.
