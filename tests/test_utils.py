@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 import pytest
-from lambdapool.utils import convert_size, datestr
+from lambdapool.utils import convert_size, datestr, run_command
 
 testdata_convert_size = [
     [0, '0 B'],
@@ -27,3 +27,6 @@ testdata_datestr = [
 @pytest.mark.parametrize('then,now,datestring', testdata_datestr)
 def test_datestr(then, now, datestring):
     assert datestr(then, now) == datestring
+
+def test_run_command():
+    assert run_command('ls').returncode == 0
