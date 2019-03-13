@@ -10,7 +10,7 @@ def copy(src, dest):
         shutil.copytree(src, dest)
 
 def run_command(command):
-    subprocess.run(command.split(), check=True)
+    return subprocess.run(command.split(), check=True)
 
 def convert_size(size_bytes):
    if size_bytes == 0:
