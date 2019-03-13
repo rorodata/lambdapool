@@ -1,6 +1,9 @@
 from datetime import datetime as dt
+import tempfile
+import pathlib
+import filecmp
 import pytest
-from lambdapool.utils import convert_size, datestr, run_command
+from lambdapool.utils import convert_size, datestr, run_command, copy
 
 testdata_convert_size = [
     [0, '0 B'],
@@ -30,3 +33,26 @@ def test_datestr(then, now, datestring):
 
 def test_run_command():
     assert run_command('ls').returncode == 0
+
+def test_copy_file():
+    with tempfile.NamedTemporaryFile() as src:
+        with open(src.name, 'w') as f:
+            f.write('lambdapool')
+        with tempfile.NamedTemporaryFile() as dst:
+            src = pathlib.Path(src.name)
+            dst = pathlib.Path(dst.name)
+            copy(src, dst)
+
+            assert filecmp.cmp(src, dst) == True
+
+def test_copy_directory():
+    with tempfile.TemporaryDirectory() as src:
+        print(src)
+        with pathlib.Path(src+'/file1.txt').open(mode='w') as f:
+            f.write('lambdapool')
+        with tempfile.TemporaryDirectory() as dst:
+            src = pathlib.Path(src)
+            dst = pathlib.Path(dst+'/dest')
+            copy(src, dst)
+
+            assert (filecmp.dircmp(src, dst).diff_files) == []
