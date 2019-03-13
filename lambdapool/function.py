@@ -3,7 +3,6 @@ import sys
 import pathlib
 import tempfile
 import shutil
-import base64
 
 from lambdapool import utils, aws
 

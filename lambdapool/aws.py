@@ -18,7 +18,7 @@ class Role:
             role = iam_resource.Role(self.role_name)
             role.description
             return role
-        except iam_client.exceptions.NoSuchEntityException as e:
+        except iam_client.exceptions.NoSuchEntityException:
             return
 
     def exists(self):
@@ -44,7 +44,7 @@ class Role:
                     }
                 ]
             )
-        except iam_client.exceptions.EntityAlreadyExistsException as e:
+        except iam_client.exceptions.EntityAlreadyExistsException:
             pass
 
         self.role = self.get_role()

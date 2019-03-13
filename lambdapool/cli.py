@@ -1,5 +1,4 @@
 import click
-import os
 
 from .function import LambdaPoolFunction
 from . import utils

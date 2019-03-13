@@ -1,4 +1,3 @@
-import functools
 import json
 import logging
 from multiprocessing.pool import ThreadPool
