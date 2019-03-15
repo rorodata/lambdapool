@@ -10,11 +10,19 @@ def cli():
 
 @cli.command()
 @click.option('--requirements', '-r', type=click.Path(exists=True))
+@click.option('--memory', type=click.INT)
+@click.option('--timeout', type=click.INT)
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1, type=click.Path(exists=True))
-def create(function_name, paths, requirements):
+def create(function_name, paths, requirements, memory, timeout):
     click.echo('=== Creating lambdapool function ===')
-    func = LambdaPoolFunction(function_name, paths, requirements)
+    func = LambdaPoolFunction(
+        function_name=function_name,
+        paths=paths,
+        requirements=requirements,
+        memory=memory,
+        timeout=timeout
+    )
     func.create()
     click.echo(f'=== Succesfully created lambdapool function {function_name} ===')
 
@@ -29,12 +37,20 @@ def list():
 
 @cli.command()
 @click.option('--requirements', '-r', type=click.Path(exists=True))
+@click.option('--memory', type=click.INT)
+@click.option('--timeout', type=click.INT)
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1)
-def update(function_name, paths, requirements):
+def update(function_name, paths, requirements, memory, timeout):
     click.echo('=== Updating lambdapool function ===')
 
-    func = LambdaPoolFunction(function_name, paths, requirements)
+    func = LambdaPoolFunction(
+        function_name=function_name,
+        paths=paths,
+        requirements=requirements,
+        memory=memory,
+        timeout=timeout
+    )
     func.update()
 
     click.echo('=== Updated lambdapool function ===')
@@ -45,7 +61,7 @@ def update(function_name, paths, requirements):
 def delete(function_name):
     click.echo('=== Deleting lambdapool function ===')
 
-    func = LambdaPoolFunction(function_name)
+    func = LambdaPoolFunction(function_name=function_name)
     func.delete()
 
     click.echo('=== Deleted lambdapool function ===')
