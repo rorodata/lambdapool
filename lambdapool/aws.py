@@ -68,8 +68,10 @@ class Role:
         return f'Role {self.role_name}'
 
 class LambdaFunction:
-    def __init__(self, function_name):
+    def __init__(self, function_name, memory=None, timeout=None):
         self.function_name = function_name
+        self.memory = memory
+        self.timeout = timeout
 
     def exists(self):
         try:
@@ -99,7 +101,19 @@ class LambdaFunction:
             except lambda_client.exceptions.InvalidParameterValueException:
                 created = False
 
+    def get_config_kwargs(self):
+        kwargs = {}
+
+        if self.memory:
+            kwargs['MemorySize'] = self.memory
+
+        if self.timeout:
+            kwargs['Timeout'] = self.timeout
+
+        return kwargs
+
     def _create_function(self, role, archive):
+        config_kwargs = self.get_config_kwargs()
         lambda_client.create_function(
             FunctionName=self.function_name,
             Runtime='python3.6',
@@ -118,7 +132,8 @@ class LambdaFunction:
                     'FUNCTION_NAME': self.function_name,
                     'LAMBDAPOOL_VERSION': __version__
                 }
-            }
+            },
+            **config_kwargs
         )
 
     def update(self, archive):
@@ -129,6 +144,14 @@ class LambdaFunction:
             FunctionName=self.function_name,
             ZipFile=archive
             )
+
+        config_kwargs = self.get_config_kwargs()
+
+        if config_kwargs:
+            lambda_client.update_function_configuration(
+                FunctionName=self.function_name,
+                **config_kwargs
+                )
 
     def delete(self):
         if not self.exists():
