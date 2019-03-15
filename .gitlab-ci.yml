@@ -1,0 +1,8 @@
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - ./runtests.sh
+  coverage: '/^TOTAL.*\s+(\d+\%)$/'
