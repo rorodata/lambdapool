@@ -176,7 +176,9 @@ def _list_functions():
                 'function_name': function['FunctionName'],
                 'size': function['CodeSize'],
                 'last_updated': datetime.datetime.strptime(function['LastModified'], '%Y-%m-%dT%H:%M:%S.%f%z'),
-                'environment': function.get('Environment', {}).get('Variables', {})
+                'environment': function.get('Environment', {}).get('Variables', {}),
+                'memory': function.get('MemorySize'),
+                'timeout': function.get('Timeout')
             }
             for function in response.get('Functions', [])
         ]
