@@ -1,8 +1,11 @@
+import sys
 import click
 
 from .function import LambdaPoolFunction
 from . import utils
 from tabulate import tabulate
+
+from lambdapool import exceptions
 
 @click.group()
 def cli():
@@ -16,14 +19,20 @@ def cli():
 @click.argument('paths', nargs=-1, type=click.Path(exists=True))
 def create(function_name, paths, requirements, memory, timeout):
     click.echo('=== Creating lambdapool function ===')
-    func = LambdaPoolFunction(
-        function_name=function_name,
-        paths=paths,
-        requirements=requirements,
-        memory=memory,
-        timeout=timeout
-    )
-    func.create()
+
+    try:
+        func = LambdaPoolFunction(
+            function_name=function_name,
+            paths=paths,
+            requirements=requirements,
+            memory=memory,
+            timeout=timeout
+        )
+        func.create()
+    except exceptions.LambdaFunctionError as e:
+        click.echo(f'ERROR: {e}')
+        sys.exit(1)
+
     click.echo(f'=== Succesfully created lambdapool function {function_name} ===')
 
 @cli.command()
@@ -44,17 +53,20 @@ def list():
 def update(function_name, paths, requirements, memory, timeout):
     click.echo('=== Updating lambdapool function ===')
 
-    func = LambdaPoolFunction(
-        function_name=function_name,
-        paths=paths,
-        requirements=requirements,
-        memory=memory,
-        timeout=timeout
-    )
-    func.update()
+    try:
+        func = LambdaPoolFunction(
+            function_name=function_name,
+            paths=paths,
+            requirements=requirements,
+            memory=memory,
+            timeout=timeout
+        )
+        func.update()
+    except exceptions.LambdaFunctionError as e:
+        click.echo(f'ERROR: {e}')
+        sys.exit(1)
 
     click.echo('=== Updated lambdapool function ===')
-
 
 @cli.command()
 @click.argument('function_name', nargs=1)
