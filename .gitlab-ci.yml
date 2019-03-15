@@ -3,6 +3,10 @@ stages:
 
 test:
   stage: test
+  image: rorodata/python3
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
   script:
     - ./runtests.sh
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
