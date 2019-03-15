@@ -68,10 +68,11 @@ class Role:
         return f'Role {self.role_name}'
 
 class LambdaFunction:
-    def __init__(self, function_name, memory=None, timeout=None):
+    def __init__(self, function_name, memory=None, timeout=None, layers=None):
         self.function_name = function_name
         self.memory = memory
         self.timeout = timeout
+        self.layers = layers
 
     def exists(self):
         try:
@@ -109,6 +110,9 @@ class LambdaFunction:
 
         if self.timeout:
             kwargs['Timeout'] = self.timeout
+
+        if self.layers:
+            kwargs['Layers'] = self.layers
 
         return kwargs
 

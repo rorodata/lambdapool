@@ -15,9 +15,10 @@ def cli():
 @click.option('--requirements', '-r', type=click.Path(exists=True))
 @click.option('--memory', type=click.INT)
 @click.option('--timeout', type=click.INT)
+@click.option('--layers')
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1, type=click.Path(exists=True))
-def create(function_name, paths, requirements, memory, timeout):
+def create(function_name, paths, requirements, memory, timeout, layers):
     click.echo('=== Creating lambdapool function ===')
 
     try:
@@ -26,7 +27,8 @@ def create(function_name, paths, requirements, memory, timeout):
             paths=paths,
             requirements=requirements,
             memory=memory,
-            timeout=timeout
+            timeout=timeout,
+            layers=layers.split(',')
         )
         func.create()
     except exceptions.LambdaFunctionError as e:
@@ -56,9 +58,10 @@ def list():
 @click.option('--requirements', '-r', type=click.Path(exists=True))
 @click.option('--memory', type=click.INT)
 @click.option('--timeout', type=click.INT)
+@click.option('--layers')
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1)
-def update(function_name, paths, requirements, memory, timeout):
+def update(function_name, paths, requirements, memory, timeout, layers):
     click.echo('=== Updating lambdapool function ===')
 
     try:
@@ -67,7 +70,8 @@ def update(function_name, paths, requirements, memory, timeout):
             paths=paths,
             requirements=requirements,
             memory=memory,
-            timeout=timeout
+            timeout=timeout,
+            layers=layers.split(',')
         )
         func.update()
     except exceptions.LambdaFunctionError as e:

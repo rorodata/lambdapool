@@ -7,11 +7,12 @@ import shutil
 from lambdapool import utils, aws, exceptions
 
 class LambdaPoolFunction:
-    def __init__(self, function_name, memory, timeout, paths=None, requirements=None):
+    def __init__(self, function_name, memory, timeout, layers, paths=None, requirements=None):
         self.function_name = function_name
 
         self.memory = memory
         self.timeout = timeout
+        self.layers = layers
         self.validate_function_configuration()
 
         self.paths = paths
@@ -118,7 +119,7 @@ class LambdaPoolFunction:
         with open(self.archive, 'rb') as f:
             archive_data = f.read()
 
-        aws_lambda_function = aws.LambdaFunction(self.function_name, self.memory, self.timeout)
+        aws_lambda_function = aws.LambdaFunction(self.function_name, self.memory, self.timeout, self.layers)
         aws_lambda_function.create(archive_data)
 
         print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
@@ -129,7 +130,7 @@ class LambdaPoolFunction:
         with open(self.archive, 'rb') as f:
             archive_data = f.read()
 
-        aws_lambda_function = aws.LambdaFunction(self.function_name, self.memory, self.timeout)
+        aws_lambda_function = aws.LambdaFunction(self.function_name, self.memory, self.timeout, self.layers)
         aws_lambda_function.update(archive_data)
 
         print(f'=== Function {self.function_name} uploaded along with all dependencies ===')
