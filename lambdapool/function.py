@@ -4,7 +4,7 @@ import pathlib
 import tempfile
 import shutil
 
-from lambdapool import utils, aws
+from lambdapool import utils, aws, exceptions
 
 class LambdaPoolFunction:
     def __init__(self, function_name, memory, timeout, paths=None, requirements=None):
@@ -12,6 +12,7 @@ class LambdaPoolFunction:
 
         self.memory = memory
         self.timeout = timeout
+        self.validate_function_configuration()
 
         self.paths = paths
         self.requirements = requirements
@@ -24,6 +25,19 @@ class LambdaPoolFunction:
             for path in self.paths
         ] if self.paths else None
         self.requirements = pathlib.Path(root+'/'+self.requirements).resolve() if self.requirements else None
+
+    def validate_function_configuration(self):
+        if (self.memory is not None) and not self.validate_memory():
+            raise exceptions.LambdaFunctionError('Invalid memory size provided. It should be in between 128MB to 3008MB, in 64MB increments')
+
+        if (self.timeout is not None) and not self.validate_timeout():
+            raise exceptions.LambdaFunctionError('Invalid timeout provided. It should be less than 900 seconds.')
+
+    def validate_memory(self):
+        return (self.memory >= 128) and (self.memory%64 == 0) and (self.memory <= 3008)
+
+    def validate_timeout(self):
+        return (self.timeout > 0) and (self.timeout <= 900)
 
     def create(self):
         if self.exists():
