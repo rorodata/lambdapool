@@ -1,3 +1,6 @@
+import pytest
+
+@pytest.mark.s3
 class TestRole:
     def test_role_create(self):
         pass
