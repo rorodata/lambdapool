@@ -4,3 +4,6 @@ class LambdaPoolError(Exception):
 
 class LambdaFunctionError(Exception):
     pass
+
+class AWSError(Exception):
+    pass
