@@ -3,6 +3,7 @@ import datetime
 import boto3
 
 from lambdapool.version import __version__
+from lambdapool.exceptions import AWSError
 
 iam_client = boto3.client('iam')
 lambda_client = boto3.client('lambda')
@@ -45,7 +46,7 @@ class Role:
                 ]
             )
         except iam_client.exceptions.EntityAlreadyExistsException:
-            pass
+            raise AWSError(f'role {self.role_name} already exists')
 
         self.role = self.get_role()
         self.attach_policies()
@@ -57,11 +58,17 @@ class Role:
         self.role.detach_policy(PolicyArn='arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole')
 
     def delete(self):
+        if not self.exists():
+            raise AWSError(f'role {self.role_name} does not exist')
+
         self.detach_policies()
         self.role.delete()
         self.role = None
 
     def get_arn(self):
+        if not self.exists():
+            raise AWSError(f'role {self.role_name} does not exist')
+
         return self.role.arn
 
     def __repr__(self):
