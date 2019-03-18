@@ -11,7 +11,7 @@ def get_role_policies(role_name):
     role = iam_resource.Role(role_name)
     return list(role.attached_policies.all())
 
-@pytest.mark.s3
+@pytest.mark.aws
 class TestRoleGeneric:
     @pytest.fixture(autouse=True)
     def setup_role(self):
@@ -39,7 +39,7 @@ class TestRoleGeneric:
     def test_repr(self):
         assert repr(self.role) == 'Role test-role'
 
-@pytest.mark.s3
+@pytest.mark.aws
 class TestRoleWhileDoesNotExist:
     def teardown_method(self):
         role = Role('test-role')
@@ -66,7 +66,7 @@ class TestRoleWhileDoesNotExist:
         with pytest.raises(AWSError):
             role.get_arn()
 
-@pytest.mark.s3
+@pytest.mark.aws
 class TestRoleExists:
     @pytest.fixture(autouse=True)
     def setup_role(self):
