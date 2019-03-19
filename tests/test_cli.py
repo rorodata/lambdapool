@@ -1,3 +1,4 @@
+import pytest
 from click.testing import CliRunner
 
 from lambdapool.cli import cli
