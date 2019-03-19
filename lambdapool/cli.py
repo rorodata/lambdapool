@@ -78,7 +78,7 @@ def update(function_name, paths, requirements, memory, timeout, layers):
         click.echo(f'ERROR: {e}')
         sys.exit(1)
 
-    click.echo('=== Updated lambdapool function ===')
+    click.echo(f'=== Updated lambdapool function {function_name} ===')
 
 @cli.command()
 @click.argument('function_name', nargs=1)
@@ -88,4 +88,4 @@ def delete(function_name):
     func = LambdaPoolFunction(function_name=function_name)
     func.delete()
 
-    click.echo('=== Deleted lambdapool function ===')
+    click.echo(f'=== Deleted lambdapool function {function_name}===')
