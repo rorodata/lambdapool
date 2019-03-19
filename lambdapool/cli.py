@@ -71,7 +71,7 @@ def update(function_name, paths, requirements, memory, timeout, layers):
             requirements=requirements,
             memory=memory,
             timeout=timeout,
-            layers=layers.split(',')
+            layers=layers.split(',') if layers else []
         )
         func.update()
     except exceptions.LambdaFunctionError as e:
