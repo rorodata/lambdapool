@@ -2,6 +2,7 @@ from click.testing import CliRunner
 
 from lambdapool.cli import cli
 
+@pytest.mark.aws
 class TestCli:
     def test_list_no_functions(self):
         runner = CliRunner()
