@@ -9,7 +9,7 @@ def echo(msg):
     return f'ECHOING: {msg}'
 '''
 
-# @pytest.mark.aws
+@pytest.mark.aws
 class TestCli:
     def teardown_method(self):
         lambda_function = LambdaFunction('test-function')
