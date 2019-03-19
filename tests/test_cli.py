@@ -16,44 +16,46 @@ class TestCli:
         if lambda_function.exists():
             lambda_function.delete()
 
-    def test_create_function(self):
-        runner = CliRunner()
-        with runner.isolated_filesystem():
-            with open('echo.py', 'w') as f:
-                f.write(ECHO_CODE)
+    @pytest.fixture(autouse=True)
+    def runner(self):
+        self.runner = CliRunner()
 
-            result = runner.invoke(cli, ['create', 'test-function', 'echo.py'])
-            assert result.exit_code == 0
-            assert 'Succesfully created lambdapool function test-function' in result.output
+    @pytest.fixture
+    def runner_isolated_filesystem(self):
+        with self.runner.isolated_filesystem():
+            yield
+
+    @pytest.fixture
+    def function_code(self, runner_isolated_filesystem):
+        with open('echo.py', 'w') as f:
+            f.write(ECHO_CODE)
+
+    @pytest.fixture
+    def function(self, function_code):
+        result = self.runner.invoke(cli, ['create', 'test-function', 'echo.py'])
+        assert result.exit_code == 0
+
+    def test_create_function(self, function_code):
+        result = self.runner.invoke(cli, ['create', 'test-function', 'echo.py'])
+        assert result.exit_code == 0
+        assert 'Succesfully created lambdapool function test-function' in result.output
 
     def test_list_no_functions(self):
-        runner = CliRunner()
-        result = runner.invoke(cli, 'list')
+        result = self.runner.invoke(cli, 'list')
         assert result.exit_code == 0
         assert len(result.output.split('\n')) == 3
 
     def test_update_function_does_not_exist(self):
-        runner = CliRunner()
-        result = runner.invoke(cli, ['update', 'test-function', 'test.py'])
+        result = self.runner.invoke(cli, ['update', 'test-function', 'test.py'])
         assert result.exit_code != 0
         assert 'test-function does not exist' in result.output
 
-    def test_delete_function(self):
-        runner = CliRunner()
-        with runner.isolated_filesystem():
-            with open('echo.py', 'w') as f:
-                f.write(ECHO_CODE)
-
-            result = runner.invoke(cli, ['create', 'test-function', 'echo.py'])
-            assert result.exit_code == 0
-            assert 'Succesfully created lambdapool function test-function' in result.output
-
-            result = runner.invoke(cli, ['delete', 'test-function'])
-            assert result.exit_code == 0
-            assert 'Deleted lambdapool function test-function' in result.output
+    def test_delete_function(self, function):
+        result = self.runner.invoke(cli, ['delete', 'test-function'])
+        assert result.exit_code == 0
+        assert 'Deleted lambdapool function test-function' in result.output
 
     def test_delete_function_does_not_exist(self):
-        runner = CliRunner()
-        result = runner.invoke(cli, ['delete', 'test-function'])
+        result = self.runner.invoke(cli, ['delete', 'test-function'])
         assert result.exit_code != 0
         assert 'test-function does not exist' in result.output
