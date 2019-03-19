@@ -28,7 +28,7 @@ def create(function_name, paths, requirements, memory, timeout, layers):
             requirements=requirements,
             memory=memory,
             timeout=timeout,
-            layers=layers.split(',')
+            layers=layers.split(',') if layers else []
         )
         func.create()
     except exceptions.LambdaFunctionError as e:
