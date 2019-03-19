@@ -1,1 +1,3 @@
-__version__ = "0.7.0"
+from lambdapool.agent import VERSION
+
+__version__ = VERSION
