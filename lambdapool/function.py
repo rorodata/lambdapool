@@ -7,7 +7,7 @@ import shutil
 from lambdapool import utils, aws, exceptions
 
 class LambdaPoolFunction:
-    def __init__(self, function_name, memory, timeout, layers, paths=None, requirements=None):
+    def __init__(self, function_name, memory=None, timeout=None, layers=None, paths=None, requirements=None):
         self.function_name = function_name
 
         self.memory = memory
