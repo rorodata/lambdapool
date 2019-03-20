@@ -30,6 +30,11 @@ def create(function_name, paths, requirements, memory, timeout, layers):
             timeout=timeout,
             layers=layers.split(',') if layers else []
         )
+
+        if func.exists():
+            click.echo(f'lambdapool function {function_name} already exists')
+            sys.exit(1)
+
         func.create()
     except exceptions.LambdaFunctionError as e:
         click.echo(f'ERROR: {e}')
