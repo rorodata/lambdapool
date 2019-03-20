@@ -119,6 +119,11 @@ class TestCli:
         assert result.exit_code != 0
         assert 'test-function does not exist' in result.output
 
+    def test_update_function_exists(self, function):
+        result = self.runner.invoke(cli, ['update', 'test-function', 'echo.py', '--requirements', 'requirements.txt'])
+        assert result.exit_code == 0
+        assert 'Updated lambdapool function test-function' in result.output
+
     def test_delete_function(self, function):
         result = self.runner.invoke(cli, ['delete', 'test-function'])
         assert result.exit_code == 0
