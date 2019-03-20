@@ -109,6 +109,11 @@ class TestCli:
         assert result.exit_code == 0
         assert len(result.output.split('\n')) == 3
 
+    def test_list_function_exists(self, function):
+        result = self.runner.invoke(cli, 'list')
+        assert result.exit_code == 0
+        assert len(result.output.split('\n')) == 4
+
     def test_update_function_does_not_exist(self):
         result = self.runner.invoke(cli, ['update', 'test-function', 'test.py'])
         assert result.exit_code != 0
