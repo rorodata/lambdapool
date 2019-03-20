@@ -4,7 +4,7 @@ import pathlib
 import tempfile
 import shutil
 
-from lambdapool import utils, aws, exceptions
+from lambdapool import utils, aws, exceptions, agent
 
 class LambdaPoolFunction:
     def __init__(self, function_name, memory=None, timeout=None, layers=None, paths=None, requirements=None):
@@ -48,6 +48,7 @@ class LambdaPoolFunction:
         with tempfile.TemporaryDirectory() as self.tempdir:
             self.copy_paths()
             self.install_requirements()
+            self.install_agent()
 
             with tempfile.NamedTemporaryFile() as self.temparchive:
                 self.archive_function()
@@ -61,6 +62,7 @@ class LambdaPoolFunction:
         with tempfile.TemporaryDirectory() as self.tempdir:
             self.copy_paths()
             self.install_requirements()
+            self.install_agent()
 
             with tempfile.NamedTemporaryFile() as self.temparchive:
                 self.archive_function()
@@ -96,14 +98,17 @@ class LambdaPoolFunction:
                 self.install_package(package)
             print(f'=== Installed requirements from {self.requirements} ===')
 
-        print(f'=== Installing lambdapool ===')
-        self.install_package('git+ssh://git@gitlab.com/rorodata/lambdapool')
-        print(f'=== Installed lambdapool ===')
-
     def read_requirements(self):
         print(f'=== Reading requirements from {self.requirements} ===')
         with self.requirements.open() as r:
             return [l.strip('\n') for l in r.readlines()]
+
+    def install_agent(self):
+        print(f'=== Installing lambdapool agent ===')
+        src = pathlib.Path(agent.__file__)
+        dest = pathlib.Path(self.tempdir+'/lambdapool_agent.py')
+        utils.copy(src, dest)
+        print(f'=== Installed lambdapool agent ===')
 
     def install_package(self, package):
         command = f'pip install {package} --target {self.tempdir}'

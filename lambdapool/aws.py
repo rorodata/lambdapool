@@ -129,7 +129,7 @@ class LambdaFunction:
             FunctionName=self.function_name,
             Runtime='python3.6',
             Role=role.get_arn(),
-            Handler='lambdapool.lambda_handler',
+            Handler='lambdapool_agent.lambda_handler',
             Code={
                 'ZipFile': archive,
             },
