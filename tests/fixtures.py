@@ -9,6 +9,14 @@ def echo(msg):
     return f'ECHOING: {msg}'
 '''
 
+FIBONACCI_CODE = '''
+def fib(n):
+    if n>50: raise ValueError
+    if n==0 or n==1: return n
+    return fib(n-1) + fib(n-2)
+
+'''
+
 class TestFunctionBase:
     def teardown_method(self):
         lambda_function = LambdaFunction('test-function')
@@ -29,10 +37,18 @@ class TestFunctionBase:
         with open('echo.py', 'w') as f:
             f.write(ECHO_CODE)
 
+        with open('algorithms.py', 'w') as f:
+            f.write(FIBONACCI_CODE)
+
         with open('requirements.txt', 'w') as f:
             f.write('requests\n')
 
     @pytest.fixture
     def function(self, function_code):
         result = self.runner.invoke(cli, ['create', 'test-function', 'echo.py'])
+        assert result.exit_code == 0
+
+    @pytest.fixture
+    def function_fib(self, function_code):
+        result = self.runner.invoke(cli, ['create', 'test-function', 'algorithms.py'])
         assert result.exit_code == 0
