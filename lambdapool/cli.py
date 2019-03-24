@@ -57,7 +57,7 @@ def list():
                 func['timeout']
             ]
         )
-    click.echo(tabulate(rows, headers=['FUNCTION NAME', 'SIZE', 'WHEN', 'RUNTIME MEMORY (in MB)', 'TIMEOUT']))
+    click.echo(tabulate(rows, headers=['FUNCTION NAME', 'SIZE', 'WHEN', 'RUNTIME MEMORY (MB)', 'TIMEOUT (SEC)']))
 
 @cli.command()
 @click.option('--requirements', '-r', type=click.Path(exists=True))
