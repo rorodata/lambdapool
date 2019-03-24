@@ -12,13 +12,14 @@ def cli():
     pass
 
 @cli.command()
-@click.option('--requirements', '-r', type=click.Path(exists=True))
-@click.option('--memory', type=click.INT)
-@click.option('--timeout', type=click.INT)
-@click.option('--layers')
+@click.option('--requirements', '-r', type=click.Path(exists=True), help="Specifies the dependencies to be installed along with the function")
+@click.option('--memory', type=click.INT, help="Sets the memory size of the function environment")
+@click.option('--timeout', type=click.INT, help="Sets the timeout for the function in seconds")
+@click.option('--layers', help="Sets the layers to be used when the function is ran. The Layers ARN's (a maximum of 5) should be specified.")
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1, type=click.Path(exists=True))
 def create(function_name, paths, requirements, memory, timeout, layers):
+    """Create a new function"""
     click.echo('=== Creating lambdapool function ===')
 
     try:
@@ -44,6 +45,7 @@ def create(function_name, paths, requirements, memory, timeout, layers):
 
 @cli.command()
 def list():
+    """List all deployed functions"""
     funcs = LambdaPoolFunction.list()
     funcs = sorted(funcs, key=lambda x: x['last_updated'], reverse=True)
     rows = []
@@ -60,13 +62,14 @@ def list():
     click.echo(tabulate(rows, headers=['FUNCTION NAME', 'SIZE', 'WHEN', 'RUNTIME MEMORY (MB)', 'TIMEOUT (SEC)']))
 
 @cli.command()
-@click.option('--requirements', '-r', type=click.Path(exists=True))
-@click.option('--memory', type=click.INT)
-@click.option('--timeout', type=click.INT)
-@click.option('--layers')
+@click.option('--requirements', '-r', type=click.Path(exists=True), help="Specifies the dependencies to be installed along with the function")
+@click.option('--memory', type=click.INT, help="Sets the memory size of the function environment")
+@click.option('--timeout', type=click.INT, help="Sets the timeout for the function in seconds")
+@click.option('--layers', help="Sets the layers to be used when the function is ran. The Layers ARN's (a maximum of 5) should be specified.")
 @click.argument('function_name', nargs=1)
 @click.argument('paths', nargs=-1)
 def update(function_name, paths, requirements, memory, timeout, layers):
+    """Update an existing function"""
     click.echo('=== Updating lambdapool function ===')
 
     try:
@@ -88,6 +91,7 @@ def update(function_name, paths, requirements, memory, timeout, layers):
 @cli.command()
 @click.argument('function_name', nargs=1)
 def delete(function_name):
+    """Delete a function"""
     click.echo('=== Deleting lambdapool function ===')
 
     func = LambdaPoolFunction(function_name=function_name)
