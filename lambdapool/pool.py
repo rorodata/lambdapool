@@ -64,12 +64,12 @@ class LambdaFunction:
 class LambdaPool:
     def __init__(self, workers: int, lambda_function: str, aws_access_key_id: str=None, aws_secret_access_key: str=None, region_name: str=None):
         self.workers = workers
-        self.pool = ThreadPool(self.workers)
         self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, region_name)
 
     def map(self, function: str, iterable: List):
         f = LambdaFunction(self.context, function)
-        return self.pool.map(f, iterable)
+        with ThreadPool(self.workers) as pool:
+            return pool.map(f, iterable)
 
     def apply(self, function: str, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
@@ -77,4 +77,5 @@ class LambdaPool:
 
     def apply_async(self, function: str, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
-        return self.pool.apply_async(f, args=args, kwds=kwds)
+        with ThreadPool(self.workers) as pool:
+            return pool.apply_async(f, args=args, kwds=kwds)
