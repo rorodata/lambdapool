@@ -2,7 +2,7 @@ import pytest
 from click.testing import CliRunner
 
 from lambdapool.cli import cli
-from lambdapool.aws import LambdaFunction
+from lambdapool.aws import LambdaFunction, Role
 
 ECHO_CODE = '''
 def echo(msg):
@@ -23,9 +23,19 @@ class TestFunctionBase:
         if lambda_function.exists():
             lambda_function.delete()
 
+    def ensure_clean_slate(self):
+        lambda_function = LambdaFunction('test-function')
+        if lambda_function.exists():
+            lambda_function.delete()
+
+        lambda_role = Role('lambdapool-role-test-function')
+        if lambda_role.exists():
+            lambda_role.delete()
+
     @pytest.fixture(autouse=True)
     def runner(self):
         self.runner = CliRunner()
+        self.ensure_clean_slate()
 
     @pytest.fixture
     def runner_isolated_filesystem(self):
