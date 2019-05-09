@@ -1,13 +1,19 @@
 import json
 import datetime
+import sys
+
 import boto3
 
 from lambdapool.version import __version__
 from lambdapool.exceptions import AWSError
 
-iam_client = boto3.client('iam')
-lambda_client = boto3.client('lambda')
-iam_resource = boto3.resource('iam')
+try:
+    iam_client = boto3.client('iam')
+    lambda_client = boto3.client('lambda')
+    iam_resource = boto3.resource('iam')
+except Exception as e:
+    print('ERROR: Unable to provision AWS clients.\nPlease run `aws configure` before running lambdapool', e)
+    sys.exit(1)
 
 class Role:
     def __init__(self, role_name):
