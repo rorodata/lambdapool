@@ -1,7 +1,7 @@
 import json
 import logging
 from multiprocessing.pool import ThreadPool
-from typing import List
+from typing import List, Optional
 
 import boto3
 
@@ -10,7 +10,7 @@ from lambdapool.exceptions import LambdaPoolError
 logger = logging.getLogger(__name__)
 
 class Context:
-    def __init__(self, lambda_function: str, aws_access_key_id: str, aws_secret_access_key: str, aws_region_name: str):
+    def __init__(self, lambda_function: str, aws_access_key_id: Optional[str]=None, aws_secret_access_key: Optional[str]=None, aws_region_name: Optional[str]=None):
         self.lambda_function = lambda_function
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
