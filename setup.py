@@ -33,6 +33,6 @@ setup(
     install_requires=["boto3", "click", "tabulate"],
     entry_points='''
         [console_scripts]
-        lambdapool=lambdapool:cli
+        lambdapool=lambdapool.cli:cli
     '''
 )
