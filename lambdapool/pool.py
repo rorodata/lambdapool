@@ -47,7 +47,7 @@ class LambdaFunction:
         return d.lambda_client
 
     def _invoke_function(self, payload):
-        logger.info(f"=== Invoking {self.function_name} for {payload}")
+        # logger.info(f"=== Invoking {self.function_name} for {payload}")
 
         payload = {
             'payload': base64.b64encode(cloudpickle.dumps(payload)).decode('ascii')
@@ -69,7 +69,7 @@ class LambdaFunction:
 
         result = cloudpickle.loads((base64.b64decode(response_payload['result'].encode('ascii'))))
 
-        logger.info(f"=== Result for invokation of {self.function_name} on {payload}: {result}")
+        # logger.info(f"=== Result for invokation of {self.function_name} on {payload}: {result}")
 
         return result
 
