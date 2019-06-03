@@ -1,6 +1,7 @@
 boto3
 click
 tabulate
+cloudpickle
 pytest
 pytest-cov
 pytest-flakes
