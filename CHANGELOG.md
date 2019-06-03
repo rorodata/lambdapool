@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.9.0
+
+- Adds support for data serializing using cloudpickle
+- Fixes multithreading quirks with boto3 client
+- Minor bug fixes
+
 ## v0.8.0
 
 - Improves the CLI with help text and better formatting
