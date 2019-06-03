@@ -1,6 +1,7 @@
 import json
 import base64
 import logging
+import threading
 from multiprocessing.pool import ThreadPool
 from typing import List, Optional
 
@@ -22,6 +23,7 @@ class LambdaFunction:
     def __init__(self, context, function_name):
         self.context = context
         self.function_name = function_name
+        self._d = threading.local()
 
     def __call__(self, *args, **kwargs):
         payload = {
@@ -32,21 +34,26 @@ class LambdaFunction:
 
         return self._invoke_function(payload)
 
+    @property
+    def lambda_client(self):
+        d = self._d
+        if not hasattr(d, "lambda_client"):
+            d.lambda_client = boto3.client(
+                'lambda',
+                aws_access_key_id=self.context.aws_access_key_id,
+                aws_secret_access_key=self.context.aws_secret_access_key,
+                region_name=self.context.region_name
+                )
+        return d.lambda_client
+
     def _invoke_function(self, payload):
         logger.info(f"=== Invoking {self.function_name} for {payload}")
-
-        lambda_client = boto3.client(
-            'lambda',
-            aws_access_key_id=self.context.aws_access_key_id,
-            aws_secret_access_key=self.context.aws_secret_access_key,
-            region_name=self.context.region_name,
-        )
 
         payload = {
             'payload': base64.b64encode(cloudpickle.dumps(payload)).decode('ascii')
         }
 
-        response = lambda_client.invoke(
+        response = self.lambda_client.invoke(
             FunctionName=self.context.lambda_function,
             LogType='Tail',
             Payload=json.dumps(payload).encode('ascii')
