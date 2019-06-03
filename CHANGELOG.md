@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.1
+
+- Adds `cloudpickle` to the requirements
+
 ## 0.9.0
 
 - Adds support for data serializing using cloudpickle
