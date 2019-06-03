@@ -101,7 +101,8 @@ class LambdaFunction:
 
         role_name = f'lambdapool-role-{self.function_name}'
         role = Role(role_name)
-        role.create()
+        if not role.exists():
+            role.create()
 
         # XXX-Nabarun: Hack to solve the issue of propagation of roles
         # AWS IAM Roles do not instantly propagate through the AWS infrastructure
