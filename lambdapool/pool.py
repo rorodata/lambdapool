@@ -1,9 +1,11 @@
 import json
+import base64
 import logging
 from multiprocessing.pool import ThreadPool
 from typing import List, Optional
 
 import boto3
+import cloudpickle
 
 from lambdapool.exceptions import LambdaPoolError
 
@@ -40,6 +42,9 @@ class LambdaFunction:
             region_name=self.context.region_name,
         )
 
+        payload = {
+            'payload': base64.b64encode(cloudpickle.dumps(payload)).decode('ascii')
+        }
 
         response = lambda_client.invoke(
             FunctionName=self.context.lambda_function,
@@ -55,7 +60,7 @@ class LambdaFunction:
         elif response_payload.get('errorMessage'):
             raise LambdaPoolError(response_payload['errorMessage'])
 
-        result = response_payload['result']
+        result = cloudpickle.loads((base64.b64decode(response_payload['result'].encode('ascii'))))
 
         logger.info(f"=== Result for invokation of {self.function_name} on {payload}: {result}")
 
