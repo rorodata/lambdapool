@@ -109,6 +109,9 @@ class LambdaPoolFunction:
         dest = pathlib.Path(self.tempdir+'/lambdapool_agent.py')
         utils.copy(src, dest)
         print(f'=== Installed lambdapool agent ===')
+        print(f'=== Installing lambdapool agent dependencies ===')
+        self.install_package('cloudpickle')
+        print(f'=== Installed lambdapool agent dependencies ===')
 
     def install_package(self, package):
         command = f'pip install {package} --target {self.tempdir}'

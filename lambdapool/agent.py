@@ -1,4 +1,6 @@
 import importlib
+import base64
+import cloudpickle
 
 VERSION = '0.8.0'
 
@@ -7,9 +9,13 @@ def load_function(module_name, function_name):
     return getattr(module, function_name)
 
 def lambda_handler(event, context):
-    module_name, _, function_name = event['function'].rpartition('.')
-    args = event['args']
-    kwargs = event['kwargs']
+    # deserialize pickled payload
+    pickled_payload = event['payload']
+    payload = cloudpickle.loads(base64.b64decode(pickled_payload.encode('ascii')))
+
+    module_name, _, function_name = payload['function'].rpartition('.')
+    args = payload['args']
+    kwargs = payload['kwargs']
 
     try:
         func = load_function(module_name, function_name)
@@ -18,6 +24,8 @@ def lambda_handler(event, context):
 
     try:
         result = func(*args, **kwargs)
+        # serialize and pickle result
+        result = base64.b64encode(cloudpickle.dumps(result)).decode('ascii')
         return {'result': result}
     except Exception as e:
         return {'error': str(e)}
