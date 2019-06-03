@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.8.0
+
+- Improves the CLI with help text and better formatting
+- Adds test and coverage infrastructure
+- Adds tests for most of the codebase
+- Adds option to specify memory and timeout while creating or updating functions
+- Adds support for specifying layers to LambdaFunction's
+- Implements LambdaExecutor
+
 ## v0.7.0
 
 - Implements functionality to propagate and raise appropriate errors

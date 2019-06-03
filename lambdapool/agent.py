@@ -1,6 +1,6 @@
 import importlib
 
-VERSION = '0.7.0'
+VERSION = '0.8.0'
 
 def load_function(module_name, function_name):
     module = importlib.import_module(module_name)
