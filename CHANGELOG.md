@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.2
+
+- Changes Author Info and restructures `setup.py`
+
 ## 0.9.1
 
 - Adds `cloudpickle` to the requirements

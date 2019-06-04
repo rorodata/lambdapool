@@ -1,6 +1,6 @@
 import os
 import pathlib
-from setuptools import setup
+from setuptools import setup, find_packages
 
 def get_version():
     """Returns the package version taken from version.py.
@@ -13,24 +13,25 @@ def get_version():
         exec(code, env, env)
         return env['__version__']
 
-# The directory containing this file
 HERE = pathlib.Path(__file__).parent
-
-# The text of the README file
 README = (HERE / "README.md").read_text()
 
-# This call to setup() does all the work
 setup(
     name="lambda-pool",
     version=get_version(),
+    author='rorodata',
+    author_email='rorodata.team@gmail.com',
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/rorodata/lambda-pool",
-    author="Nabarun Pal",
-    author_email="pal.nabarun95@gmail.com",
-    packages=["lambdapool"],
+    packages=find_packages(),
     include_package_data=True,
-    install_requires=["boto3", "click", "tabulate", "cloudpickle"],
+    install_requires=[
+        "boto3",
+        "click",
+        "tabulate",
+        "cloudpickle"
+    ],
     entry_points='''
         [console_scripts]
         lambdapool=lambdapool.cli:cli
