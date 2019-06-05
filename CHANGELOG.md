@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.3
+
+- Fixes some naming inconsistencies
+
 ## 0.9.2
 
 - Changes Author Info and restructures `setup.py`
