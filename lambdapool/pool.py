@@ -74,9 +74,16 @@ class LambdaFunction:
         return result
 
 class LambdaPool:
-    def __init__(self, workers: int, lambda_function: str, aws_access_key_id: str=None, aws_secret_access_key: str=None, region_name: str=None):
+    def __init__(
+        self,
+        workers: int,
+        lambda_function: str,
+        aws_access_key_id: str=None,
+        aws_secret_access_key: str=None,
+        aws_region_name: str=None
+    ):
         self.workers = workers
-        self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, region_name)
+        self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, aws_region_name)
 
     def map(self, function: str, iterable: List):
         f = LambdaFunction(self.context, function)

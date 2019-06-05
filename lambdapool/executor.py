@@ -8,11 +8,11 @@ class LambdaExecutor:
         lambda_function: str,
         aws_access_key_id: str=None,
         aws_secret_access_key: str=None,
-        region_name: str=None,
+        aws_region_name: str=None,
         max_workers: int=None
     ):
         self.max_workers = max_workers
-        self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, region_name)
+        self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, aws_region_name)
         self.executor = ThreadPoolExecutor(max_workers=max_workers)
 
     def submit(self, function_name: str, *args: Any, **kwargs: Any):
