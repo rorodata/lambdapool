@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.5
+
+- Removes the dependency of setup.py on lambdapool/agent.py
+
 ## 0.9.4
 
 - Modifies the default aws endpoint timeout and adds the support to specify the same
