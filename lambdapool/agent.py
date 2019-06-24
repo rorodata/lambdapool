@@ -2,7 +2,7 @@ import importlib
 import base64
 import cloudpickle
 
-VERSION = '0.9.3'
+VERSION = '0.9.4'
 
 def load_function(module_name, function_name):
     module = importlib.import_module(module_name)

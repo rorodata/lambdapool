@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.9.4
+
+- Modifies the default aws endpoint timeout and adds the support to specify the same
+
 ## 0.9.3
 
 - Fixes some naming inconsistencies
