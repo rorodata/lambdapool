@@ -78,15 +78,15 @@ The user can also use map to perform mutliple tasks at the same time.
 
 > Note: The `LambdaPool.map` interface does not support keyword arguments. Passing more than one argument is also not possible. This is a decision strictly taken to conform with `multiprocessing.pool.ThreadPool` API.
 
-The source code for the above implementation can be found [here](https://github.com/rorodata/lambda-pool)
+The source code for the above implementation can be found [here](https://github.com/rorodata/lambdapool)
 
 You can try this out by installing it from `pip`,
 
 ```bash
-$ pip install --user git+https://gitlab.com/rorodata/lambda-pool
+$ pip install --user git+https://gitlab.com/rorodata/lambdapool
 ```
 
-> Note: But make sure you deploy the lambda function before using `lambda-pool`.
+> Note: But make sure you deploy the lambda function before using `lambdapool`.
 
 ## Structure of the AWS Lambda artefacts
 

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## X.Y.Z
+
+- Makes the project and module naming consistent
+
 ## 0.9.5
 
 - Removes the dependency of setup.py on lambdapool/agent.py
