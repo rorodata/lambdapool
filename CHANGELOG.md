@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## X.Y.Z
+## 0.9.6
 
 - Makes the project and module naming consistent
 

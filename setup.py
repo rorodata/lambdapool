@@ -6,7 +6,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="lambdapool",
-    version="0.9.5",
+    version="0.9.6",
     author='rorodata',
     author_email='rorodata.team@gmail.com',
     long_description=README,
