@@ -22,14 +22,14 @@ class Context:
         self.read_timeout = kwargs.pop('read_timeout', 300)
 
 class LambdaFunction:
-    def __init__(self, context, function_name):
+    def __init__(self, context, function):
         self.context = context
-        self.function_name = function_name
+        self.function = function
         self._d = threading.local()
 
     def __call__(self, *args, **kwargs):
         payload = {
-            'function': self.function_name,
+            'function': self.function,
             'args': args,
             'kwargs': kwargs
         }
@@ -50,29 +50,27 @@ class LambdaFunction:
         return d.lambda_client
 
     def _invoke_function(self, payload):
-        # logger.info(f"=== Invoking {self.function_name} for {payload}")
+        payload = base64.b64encode(cloudpickle.dumps(payload)).decode('ascii')
 
-        payload = {
-            'payload': base64.b64encode(cloudpickle.dumps(payload)).decode('ascii')
-        }
+        payload = json.dumps(payload)
 
         response = self.lambda_client.invoke(
             FunctionName=self.context.lambda_function,
             LogType='Tail',
-            Payload=json.dumps(payload).encode('ascii')
+            Payload=payload
         )
 
-        response_payload = json.loads(response['Payload'].read().decode('ascii'))
+        response = json.loads(response['Payload'].read().decode('ascii'))
 
-        if response_payload.get('error'):
-            raise LambdaPoolError(response_payload['error'])
+        if response.get('error'):
+            raise LambdaPoolError(response['error'])
         # AWS errors like timeout errors are passed like this
-        elif response_payload.get('errorMessage'):
-            raise LambdaPoolError(response_payload['errorMessage'])
+        elif response.get('errorMessage'):
+            raise LambdaPoolError(response['errorMessage'])
 
-        result = cloudpickle.loads((base64.b64decode(response_payload['result'].encode('ascii'))))
+        result = response['result']
 
-        # logger.info(f"=== Result for invokation of {self.function_name} on {payload}: {result}")
+        result = cloudpickle.loads(base64.b64decode(result.encode('ascii')))
 
         return result
 
@@ -88,16 +86,16 @@ class LambdaPool:
         self.workers = workers
         self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, aws_region_name)
 
-    def map(self, function: str, iterable: List):
+    def map(self, function, iterable: List):
         f = LambdaFunction(self.context, function)
         with ThreadPool(self.workers) as pool:
             return pool.map(f, iterable)
 
-    def apply(self, function: str, args: List = [], kwds: dict = {}):
+    def apply(self, function, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
         return f(*args, **kwds)
 
-    def apply_async(self, function: str, args: List = [], kwds: dict = {}):
+    def apply_async(self, function, args: List = [], kwds: dict = {}):
         f = LambdaFunction(self.context, function)
         with ThreadPool(self.workers) as pool:
             return pool.apply_async(f, args=args, kwds=kwds)

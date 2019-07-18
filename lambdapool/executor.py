@@ -15,12 +15,12 @@ class LambdaExecutor:
         self.context = Context(lambda_function, aws_access_key_id, aws_secret_access_key, aws_region_name)
         self.executor = ThreadPoolExecutor(max_workers=max_workers)
 
-    def submit(self, function_name: str, *args: Any, **kwargs: Any):
-        f = LambdaFunction(self.context, function_name)
+    def submit(self, function: str, *args: Any, **kwargs: Any):
+        f = LambdaFunction(self.context, function)
         return self.executor.submit(f, *args, **kwargs)
 
-    def map(self, function_name: str, iterable: Iterable, timeout: Union[int, float]=None):
-        f = LambdaFunction(self.context, function_name)
+    def map(self, function: str, iterable: Iterable, timeout: Union[int, float]=None):
+        f = LambdaFunction(self.context, function)
         return self.executor.map(f, iterable)
 
     def shutdown(self, wait: bool=True):
