@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.9.7
+
+- Executor and Pool API now take function directly instead of the function name
+    Eg: pool.map(fibonacci, list(range(10))) instead of
+        pool.map('algorithms.fibonacci', list(range(10)))
+
 ## 0.9.6
 
 - Makes the project and module naming consistent
