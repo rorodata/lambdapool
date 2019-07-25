@@ -2,9 +2,8 @@
 
 ## Overview
 
-Lambda Pool is a tool through which a developer can deploy code on AWS Lambda and call the same code easily with a simple and comprehendible interface without going too much out of way from existing code.
-
-The other primary objective is to abstract away the process of creating a Lambda function which is also tedious and requires domain knowledge. The goal of this tool is to remove the requirement of domain knowledge when trying to use serverless technology in day to day developer workflow.
+Lambda Pool is a tool for developers to deploy code to AWS Lambda with minimum fuss. Lambda Pool abstract away the tedious setup for creating a Lambda function and provides a simple interface which the developer can use without leaving their codebase.
+The goal of this tool is to streamline access to serverless technology in day to day developer workflow.
 
 ## Features
 
