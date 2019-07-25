@@ -7,6 +7,7 @@ test:
   before_script:
     - pip install --upgrade pip
     - pip install -r requirements.txt
+    - pip install -r dev-requirements.txt
   script:
     - ./runtests.sh
   coverage: '/^TOTAL.*\s+(\d+\%)$/'
