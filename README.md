@@ -243,6 +243,7 @@ The `submit` method returns what is known as a [Future](https://docs.python.org/
 
 ## Future Work
 
+- Distribute lambdapool through PyPI
 - Permissions management system
 - System to fetch execution logs
 - Extend the system to GCF
