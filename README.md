@@ -12,6 +12,12 @@ The goal of this tool is to streamline access to serverless technology in day to
 - LambdaPool interface
 - LambdaExecutor Interface
 
+## Genesis
+
+The `algoshelf` stack of software needs a Task Queue to run data pipelines like forecast computation. The constituent tasks can be broken down into independent components which can be parallely scheduled. One way of doing this running the tasks on different machine cores using `multiprocessing`. But, this is not very scalable and leads to wastage of compute resources as the resources lie idle for most periods of time.
+
+A better way to tackle the problem is to use serverless technology as a backend for running the computation. There are various serverless options in market pushed by the major cloud providers, for example, Amazon Web Services Lambda by Amazon and Google Cloud functions by Google. Serverless abstracts away the underlying compute resources. The users don't need to think about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. The idea is to make running the compute workloads `virtually infinitely scalable` (subject to AWS limitations).
+
 ## Installation
 
 `lambdapool` can be installed by installing the tarball from [here](https://lambdapool-releases.s3.amazonaws.com/lambdapool-0.9.7.tar.gz)
@@ -26,12 +32,6 @@ Successfully installed lambdapool-0.9.7
 ```
 
 Currently, the package is being released as a tarball. Plans are underway to distribute `lambdapool` through PyPI.
-
-## Genesis
-
-The `algoshelf` stack of software needs a Task Queue to run data pipelines like forecast computation. The constituent tasks can be broken down into independent components which can be parallely scheduled. One way of doing this running the tasks on different machine cores using `multiprocessing`. But, this is not very scalable and leads to wastage of compute resources as the resources lie idle for most periods of time.
-
-A better way to tackle the problem is to use serverless technology as a backend for running the computation. There are various serverless options in market pushed by the major cloud providers, for example, Amazon Web Services Lambda by Amazon and Google Cloud functions by Google. Serverless abstracts away the underlying compute resources. The users don't need to think about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. The idea is to make running the compute workloads `virtually infinitely scalable` (subject to AWS limitations).
 
 ## Usage - Command Line Interface
 
@@ -236,6 +236,12 @@ The `submit` method returns what is known as a [Future](https://docs.python.org/
 
 > Note: The above example assumes that the functions are already deployed to Lambda, as shown [here](#deployment)
 
+## Prerequisite Credentials
+
+Lambda Pool requires at the least an IAM user with the policy action `lambda:*`. In production scenarios, [Principle of Least Privilege][polp] should be followed and more granular access should be given based on who is using Lambda Pool (Principle of Least Privilege). For example, `lambda:InvokeFunction` policy action is sufficient to use the `LambdaPool` and `LambdaExecutor` constructs but an user with those credentials can not create a Lambda function with the CLI.
+
+For more information, you can read the [AWS Lambda Permissions documentation][aws-lambda-permissions-docs].
+
 ## Limitations
 
 - Serialization of the payload is being a hurdle. Need to find better solutions than Cloudpickle.
@@ -271,3 +277,5 @@ All maintainers, contributors and people involved with the project are bound by 
 [changelog]: CHANGELOG.md
 [license]: LICENSE
 [rorodata-team]: mailto:team@rorodata.com
+[aws-lambda-permissions-docs]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
+[polp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
