@@ -269,7 +269,7 @@ All maintainers, contributors and people involved with the project are bound by 
 ## Contact
 
 - [Rorodata Public Slack][slack]
-- [team@rorodata.com][rorodata-team]
+- [opensource@rorodata.com][rorodata-team]
 
 
 [coc]: CODE_OF_CONDUCT.md
