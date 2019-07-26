@@ -276,6 +276,6 @@ All maintainers, contributors and people involved with the project are bound by 
 [slack]: https://slack.rorocloud.io
 [changelog]: CHANGELOG.md
 [license]: LICENSE
-[rorodata-team]: mailto:team@rorodata.com
+[rorodata-team]: mailto:opensource@rorodata.com
 [aws-lambda-permissions-docs]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
 [polp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
