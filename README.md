@@ -16,7 +16,7 @@ The goal of this tool is to streamline access to serverless technology in day to
 
 We needed a Task Queue to run our data pipelines such as forecasts, anomaly detectors. These tasks were modular enough to be executed in parallel. One approach to achieve this is by running the tasks on different cores using `multiprocessing`. But, this is not scalable and resources remain under-utilised.
 
-We found serverless to be far modern and impactful solution. Also we can pick one of Amazon Web Services Lambda, Google Cloud Functions off-the-shelf. In serverless, the users do not worry about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. We wanted to build on this idea `virtually infinitely scalable` compute workloads. (subject to cloud provider limitations).
+We found serverless to be far modern and impactful solution. Also we can pick one of Amazon Web Services Lambda, Google Cloud Functions off-the-shelf. In serverless, the users do not worry about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. We wanted to build on this idea of `near-infinitely scalable` compute workloads, subject to cloud provider limitations.
 
 ## Installation
 
