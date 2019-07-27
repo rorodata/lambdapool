@@ -14,9 +14,9 @@ The goal of this tool is to streamline access to serverless technology in day to
 
 ## Genesis
 
-The `algoshelf` stack of software needs a Task Queue to run data pipelines like forecast computation. The constituent tasks can be broken down into independent components which can be parallely scheduled. One way of doing this is running the tasks on different machine cores using `multiprocessing`. But, this is not very scalable and leads to wastage of compute resources as the resources lie idle for most periods of time. Using multiple machines also adds operational complexity to the codebase.
+We needed a Task Queue to run our data pipelines such as forecasts, anomaly detectors. These tasks were modular enough to be executed in parallel. One approach to achieve this is by running the tasks on different cores using `multiprocessing`. But, this is not scalable and resources remain under-utilised.
 
-A better way to tackle the problem is to use serverless technology as a backend for running the computation. There are various serverless options in market pushed by the major cloud providers, for example, Amazon Web Services Lambda by Amazon and Google Cloud functions by Google. Serverless abstracts away the underlying compute resources. The users don't need to think about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. The idea is to enable running the compute workloads `near-infinitely scalable`, subject to AWS limitations.
+We found serverless to be far modern and impactful solution. Also we can pick one of Amazon Web Services Lambda, Google Cloud Functions off-the-shelf. In serverless, the users do not worry about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. We wanted to build on this idea `virtually infinitely scalable` compute workloads. (subject to cloud provider limitations).
 
 ## Installation
 
@@ -31,7 +31,7 @@ Installing collected packages: lambdapool
 Successfully installed lambdapool-0.9.7
 ```
 
-Currently, the package is being released as a tarball. Plans are underway to distribute `lambdapool` through PyPI.
+Currently, the package is being released as a tarball.
 
 ## Usage - Command Line Interface
 
@@ -275,13 +275,13 @@ All maintainers, contributors and people involved with the project are bound by 
 ## Contact
 
 - [Rorodata Public Slack][slack]
-- [team@rorodata.com][rorodata-team]
+- [opensource@rorodata.com][rorodata-team]
 
 
 [coc]: CODE_OF_CONDUCT.md
 [slack]: https://slack.rorocloud.io
 [changelog]: CHANGELOG.md
 [license]: LICENSE
-[rorodata-team]: mailto:team@rorodata.com
+[rorodata-team]: mailto:opensource@rorodata.com
 [aws-lambda-permissions-docs]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
 [polp]: https://en.wikipedia.org/wiki/Principle_of_least_privilege
