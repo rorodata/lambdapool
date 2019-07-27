@@ -8,19 +8,19 @@ The goal of this tool is to streamline access to serverless technology in day to
 ## Features
 
 - CLI to create, list, update and delete functions
-- Support for specifying function layers, list layers used foreach functions
-- LambdaPool interface
-- LambdaExecutor Interface
+- Support for specifying function layers and list the layers used for each functions
+- `LambdaPool` interface (analogous to `ThreadPool` and `ProcessPool`)
+- `LambdaExecutor` Interface (analogous to `ThreadPoolExecutor` and `ProcessPoolExecutor`)
 
 ## Genesis
 
-The `algoshelf` stack of software needs a Task Queue to run data pipelines like forecast computation. The constituent tasks can be broken down into independent components which can be parallely scheduled. One way of doing this running the tasks on different machine cores using `multiprocessing`. But, this is not very scalable and leads to wastage of compute resources as the resources lie idle for most periods of time.
+The `algoshelf` stack of software needs a Task Queue to run data pipelines like forecast computation. The constituent tasks can be broken down into independent components which can be parallely scheduled. One way of doing this is running the tasks on different machine cores using `multiprocessing`. But, this is not very scalable and leads to wastage of compute resources as the resources lie idle for most periods of time. Using multiple machines also adds operational complexity to the codebase.
 
-A better way to tackle the problem is to use serverless technology as a backend for running the computation. There are various serverless options in market pushed by the major cloud providers, for example, Amazon Web Services Lambda by Amazon and Google Cloud functions by Google. Serverless abstracts away the underlying compute resources. The users don't need to think about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. The idea is to make running the compute workloads `virtually infinitely scalable` (subject to AWS limitations).
+A better way to tackle the problem is to use serverless technology as a backend for running the computation. There are various serverless options in market pushed by the major cloud providers, for example, Amazon Web Services Lambda by Amazon and Google Cloud functions by Google. Serverless abstracts away the underlying compute resources. The users don't need to think about spawning infrastructure, scaling them up during high resource usage and scaling them back down when idle. The idea is to enable running the compute workloads `near-infinitely scalable`, subject to AWS limitations.
 
 ## Installation
 
-`lambdapool` can be installed by installing the tarball from [here](https://lambdapool-releases.s3.amazonaws.com/lambdapool-0.9.7.tar.gz)
+`lambdapool` can be installed from the tarball available [here](https://lambdapool-releases.s3.amazonaws.com/lambdapool-0.9.7.tar.gz)
 
 ```bash
 $ pip install --user https://lambdapool-releases.s3.amazonaws.com/lambdapool-0.9.7.tar.gz
@@ -103,7 +103,11 @@ Copying algorithms.py...
 === Succesfully created lambdapool function algorithms ===
 ```
 
-The specified code is now uploaded to AWS Lambda as a Lambda function. This is now ready to be consumed in your code. The API for LambdaPool is explained below.
+> The `memory` specified in the above example refers to the runtime memory available to the Lambda function.
+
+> The `timeout` refers to the maximum amount of time a function invocation can execute.
+
+The specified code is now uploaded to AWS Lambda as a Lambda function. This is now ready to be consumed in your code. The API for LambdaPool is explained in the sections [below].
 
 ### Listing all lambda functions
 
@@ -151,7 +155,7 @@ def factorial(n):
 ```
 
 ```bash
-examples $ lambdapool update algorithms algorithms --memory 128 --timeout 300
+examples $ lambdapool update algorithms algorithms/ --memory 128 --timeout 300
 === Updating lambdapool function ===
 == Copying all specified files and directories ===
 Copying algorithms...
@@ -165,6 +169,8 @@ Copying algorithms...
 ## LambdaPool API
 
 The user should be able to create a pool of workers, specifying the maximum concurrency. Also, LambdaPool would require the name of the Lambda function that sits as an entrypoint on AWS Lambda.
+
+For example, in the below illustrations the name of the lambda function is `algorithms` as we deployed above.
 
 ```python
 >>> from lambdapool import LambdaPool
@@ -187,7 +193,7 @@ The user can perform a single synchronous task like the following:
 55
 ```
 
-Or, you can specify keyword arguments instead also,
+`LambdaPool.apply` can also take in keyword arguments like `ThreadPool.apply`/`ProcessPool.apply`
 
 ```python
 >>> pool.apply(fibonacci, kwds={'n': 10})
@@ -207,7 +213,7 @@ An asynchronous invocation is possible as:
 The user can also use map to perform mutliple tasks at the same time.
 
 ```python
->>> pool.map(fibonacci, range(100))
+>>> pool.map(fibonacci, range(20))
 [0, 1, 1, 2, 3, 5, 8, ...]
 ```
 
@@ -238,14 +244,14 @@ The `submit` method returns what is known as a [Future](https://docs.python.org/
 
 ## Prerequisite Credentials
 
-Lambda Pool requires at the least an IAM user with the policy action `lambda:*`. In production scenarios, [Principle of Least Privilege][polp] should be followed and more granular access should be given based on who is using Lambda Pool (Principle of Least Privilege). For example, `lambda:InvokeFunction` policy action is sufficient to use the `LambdaPool` and `LambdaExecutor` constructs but an user with those credentials can not create a Lambda function with the CLI.
+Lambda Pool requires at the least an IAM user with the policy action `lambda:*`. In production scenarios, [Principle of Least Privilege][polp] should be followed and more granular access should be given based on who is using Lambda Pool (Principle of Least Privilege). For example, `lambda:InvokeFunction` policy action is sufficient to use the `LambdaPool` and `LambdaExecutor` constructs but a user with those credentials can not create a Lambda function with the CLI.
 
 For more information, you can read the [AWS Lambda Permissions documentation][aws-lambda-permissions-docs].
 
 ## Limitations
 
-- Serialization of the payload is being a hurdle. Need to find better solutions than Cloudpickle.
-- The decoupling between function provisioning and execution can cause incoherencies.
+- Serialization of the payload is a hurdle. Need to find better solutions than Cloudpickle.
+- The decoupling between function provisioning and execution can be incoherent.
 
 ## Future Work
 
